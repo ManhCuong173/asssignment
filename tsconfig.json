@@ -1,0 +1,41 @@
+{
+    "compilerOptions": {
+        "baseUrl": "src",
+        "target": "es5",
+        "allowJs": true,
+        "skipLibCheck": true,
+        "esModuleInterop": true,
+        "allowSyntheticDefaultImports": true,
+        "moduleResolution": "node",
+        "resolveJsonModule": true,
+        "isolatedModules": true,
+        "typeRoots": [
+            "./node_modules/@types"
+        ],
+        "lib": [
+            "dom",
+            "es2017",
+            "es2019",
+            "dom.iterable",
+            "esnext"
+        ],
+        "jsx": "preserve",
+        "strictNullChecks": false,
+        "noImplicitAny": false,
+        "paths": {
+            "/components/*": ["/components/*.{ts|tsx}"],
+            "/config/*": ["/config/*.{ts|tsx}"],
+            "/packages/*": ["/packages/*.{ts|tsx}"],
+            "/pages/*": ["/pages/*.{ts|tsx}"],
+            "/theme/*": ["/theme/*.{ts|tsx}"],
+            "/hooks/*": ["/hooks/*.{ts|tsx}"],
+        }
+    },
+    "exclude": [
+        "node_modules"
+      ],
+    "include": [
+        "src",
+    ],
+
+}
