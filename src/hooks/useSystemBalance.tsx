@@ -1,53 +1,63 @@
 import BigNumber from 'bignumber.js'
 import { TokenAmount } from 'config/types/tokenAmount'
 import { utils } from 'ethers'
-import { useEffect, useState } from 'react'
-import { useStakingContract } from './useContract'
-import { useStakingTokens } from './useStakingToken'
+import { useMemo, useState } from 'react'
+import { isContractInitialized } from 'utils/contract'
+import { useStakeContract } from './useContract'
+import { useStakingTokens } from './useStakeToken'
+import { useVariableInitialize } from './useVariableInitialize'
 import { useWeb3React } from './useWeb3React'
 
-export const useStakableBalance = () => {
-  const contract = useStakingContract()
+export const useStakeBalance = () => {
+  const contract = useStakeContract()
   const { account } = useWeb3React()
   const { stakingToken } = useStakingTokens()
-  const [stakableToken, setStakeableToken] = useState<TokenAmount>({ token: stakingToken, amount: new BigNumber(0) })
+  const [balance, setBalance] = useState<TokenAmount>({ token: stakingToken, amount: new BigNumber(0) })
 
-  useEffect(() => {
-    if (account) {
-      const fetch = async () => {
-        try {
-          const reward = await contract.stakingBalance(account.address)
-          const normalizeValue = utils.formatEther(reward.toString()).toString()
-          setStakeableToken({ ...stakableToken, amount: new BigNumber(normalizeValue) })
-        } catch (error) {}
-      }
+  useVariableInitialize(isContractInitialized(contract), async () => {
+    try {
+      const balanceOnChain = await contract.stakingBalance(account.address)
+      const normalizeValue = utils.formatEther(balanceOnChain)
+      setBalance({ ...balance, amount: new BigNumber(normalizeValue) })
+    } catch (error) {}
+  })
 
-      fetch()
-    }
-  }, [contract, account])
-
-  return stakableToken
+  return balance
 }
 
-export const usePendingReward = (): TokenAmount => {
-  const contract = useStakingContract()
+export const usePendingReward = (): { pendingRewardBalance: TokenAmount; claimableRewardBalance: TokenAmount } => {
+  const contract = useStakeContract()
+
   const { account } = useWeb3React()
   const { rewardToken } = useStakingTokens()
-  const [pendingReward, setPendingReward] = useState<TokenAmount>({ token: rewardToken, amount: new BigNumber(0) })
 
-  useEffect(() => {
-    if (account) {
-      const fetch = async () => {
-        try {
-          const reward = await contract.getPendingReward(account.address)
-          const normalizeValue = utils.formatEther(reward)
-          setPendingReward({ ...pendingReward, amount: new BigNumber(normalizeValue) })
-        } catch (error) {}
-      }
+  const [pendingRewardBalance, setPendingRewardBalance] = useState<TokenAmount>({
+    token: rewardToken,
+    amount: new BigNumber(0),
+  })
+  const [claimableRewardBalance, setClaimableRewardBalance] = useState<TokenAmount>({
+    token: rewardToken,
+    amount: new BigNumber(0),
+  })
 
-      fetch()
-    }
-  }, [contract, account])
+  useVariableInitialize(isContractInitialized(contract), async () => {
+    try {
+      const pendingRewardOnChain = await contract.getPendingReward(account.address)
+      const claimableRewardOnChain = await contract.rewardDebt(account.address)
 
-  return pendingReward
+      const normalizePendingReward = utils.formatEther(pendingRewardOnChain)
+      const normalizeClaimableReward = utils.formatEther(claimableRewardOnChain)
+
+      setPendingRewardBalance({ ...pendingRewardBalance, amount: new BigNumber(normalizePendingReward) })
+      setClaimableRewardBalance({ ...claimableRewardBalance, amount: new BigNumber(normalizeClaimableReward) })
+    } catch (error) {}
+  })
+
+  return useMemo(
+    () => ({
+      pendingRewardBalance,
+      claimableRewardBalance,
+    }),
+    [pendingRewardBalance, claimableRewardBalance],
+  )
 }

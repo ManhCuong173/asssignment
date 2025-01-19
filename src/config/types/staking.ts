@@ -15,11 +15,20 @@ export interface IStakingContract extends Partial<Contract> {
     ): Promise<{wait: () => unknown}>
     unstake?(): Promise<{wait: () => unknown}>
     getPendingReward?(address: string): Promise<BigNumberish>
+    
+    /// Token reward balances
     stakingBalance?(address:string): Promise<BigNumberish>
+    rewardDebt?(address: string): Promise<BigNumberish>
+    claimReward?(): Promise<{wait: () => unknown}>
+    lastStakeTime?(address: string): Promise<BigNumberish>
 
     ///Events
     on?(
-        event: "Staked",
+        event: "Staked" | "Unstaked" | "RewardClaimed",
+        listener: (user: string, amount: BigNumberish) => void
+    ): Contract
+    off?(
+        event: "Staked" | "Unstaked" | "RewardClaimed",
         listener: (user: string, amount: BigNumberish) => void
     ): Contract
 }

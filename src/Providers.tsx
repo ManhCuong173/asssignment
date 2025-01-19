@@ -10,22 +10,24 @@ import { SWRConfig } from 'swr'
 import { theme } from 'theme'
 import { WagmiProvider } from 'wagmi'
 
-const Providers: React.FC<{  children: React.ReactNode }> = ({ children }) => {
+const wagmiConfigInstance = wagmiConfig()
+
+const Providers: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   return (
-    <WagmiProvider config={wagmiConfig()}>
-        <QueryClientProvider client={queryClient}>
-          <RainbowKitProvider >
-            <ThemeProvider theme={theme}>
-              <SWRConfig
-                value={{
-                  use: [fetchStatusMiddleware],
-                }}
-                >
-                {children}
-              </SWRConfig>
-            </ThemeProvider>
-          </RainbowKitProvider>
-        </QueryClientProvider>
+    <WagmiProvider config={wagmiConfigInstance}>
+      <QueryClientProvider client={queryClient}>
+        <RainbowKitProvider>
+          <ThemeProvider theme={theme}>
+            <SWRConfig
+              value={{
+                use: [fetchStatusMiddleware],
+              }}
+            >
+              {children}
+            </SWRConfig>
+          </ThemeProvider>
+        </RainbowKitProvider>
+      </QueryClientProvider>
     </WagmiProvider>
   )
 }

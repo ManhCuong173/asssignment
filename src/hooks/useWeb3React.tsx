@@ -1,10 +1,10 @@
-import { useMemo } from "react"
-import { useAccount } from "wagmi"
-import { useEthersProvider } from "./useWagmiSignerOrProvider"
+import { useMemo } from 'react'
+import { useAccount } from 'wagmi'
+import { useEthersProvider } from './useEthersProvider'
 
 export const useWeb3React = () => {
-    const account  = useAccount()
-    const etherProvider = useEthersProvider()
+  const account = useAccount()
+  const etherProvider = useEthersProvider()
 
-    return useMemo(() => ({account, etherProvider,}), [account, etherProvider,])
+  return useMemo(() => ({ account, etherProvider }), [account, etherProvider])
 }
