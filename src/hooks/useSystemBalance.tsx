@@ -8,7 +8,7 @@ import { useStakingTokens } from './useStakeToken'
 import { useVariableInitialize } from './useVariableInitialize'
 import { useWeb3React } from './useWeb3React'
 
-export const useStakeBalance = () => {
+export const useStakeBalance = (): TokenAmount => {
   const contract = useStakeContract()
   const { account } = useWeb3React()
   const { stakingToken } = useStakingTokens()
@@ -25,7 +25,7 @@ export const useStakeBalance = () => {
   return balance
 }
 
-export const usePendingReward = (): { pendingRewardBalance: TokenAmount; claimableRewardBalance: TokenAmount } => {
+export const usePendingReward = (): TokenAmount => {
   const contract = useStakeContract()
 
   const { account } = useWeb3React()
@@ -35,29 +35,15 @@ export const usePendingReward = (): { pendingRewardBalance: TokenAmount; claimab
     token: rewardToken,
     amount: new BigNumber(0),
   })
-  const [claimableRewardBalance, setClaimableRewardBalance] = useState<TokenAmount>({
-    token: rewardToken,
-    amount: new BigNumber(0),
-  })
 
   useVariableInitialize(isContractInitialized(contract), async () => {
     try {
       const pendingRewardOnChain = await contract.getPendingReward(account.address)
-      const claimableRewardOnChain = await contract.rewardDebt(account.address)
-
       const normalizePendingReward = utils.formatEther(pendingRewardOnChain)
-      const normalizeClaimableReward = utils.formatEther(claimableRewardOnChain)
 
       setPendingRewardBalance({ ...pendingRewardBalance, amount: new BigNumber(normalizePendingReward) })
-      setClaimableRewardBalance({ ...claimableRewardBalance, amount: new BigNumber(normalizeClaimableReward) })
     } catch (error) {}
   })
 
-  return useMemo(
-    () => ({
-      pendingRewardBalance,
-      claimableRewardBalance,
-    }),
-    [pendingRewardBalance, claimableRewardBalance],
-  )
+  return useMemo(() => pendingRewardBalance, [pendingRewardBalance])
 }

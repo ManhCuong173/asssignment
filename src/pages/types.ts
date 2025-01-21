@@ -4,4 +4,5 @@ export interface AppRouteConfigType {
     name: string
     render?: () => JSX.Element
     component?: React.ComponentType<any>
+    mustAuthored: boolean
   }

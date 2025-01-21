@@ -12,3 +12,4 @@ export const AddressByChainMapper: AddressByChain = {
     }
 }
 
+export const StakingContractAddress = AddressByChainMapper[ChainIdEnum.SEPOLIA]['Staking']

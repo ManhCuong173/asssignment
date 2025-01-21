@@ -1,38 +1,35 @@
 import ErrorBoundary from 'components/ErrorBoundary'
+import Layout from 'layout'
+import LayoutContent from 'layout/components/LayoutContent'
 import Topbar from 'layout/components/Topbar'
 import { AppRoutes } from 'pages/EntryPoints'
-import Home from 'pages/Home'
-import { useCallback } from 'react'
-import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import { createBrowserRouter, Outlet, RouterProvider } from 'react-router-dom'
 import './App.css'
 
-function App() {
-  const routes = useCallback(
-    () => [
+const router = createBrowserRouter([
+  {
+    path: '/',
+    element: (
+      <ErrorBoundary>
+        <Layout>
+          <Topbar />
+          <LayoutContent>
+            <Outlet />
+          </LayoutContent>
+        </Layout>
+      </ErrorBoundary>
+    ),
+    children: [
       ...AppRoutes.filter((route) => route.path && route.component).map((validRoute) => ({
         path: validRoute.path,
         element: <validRoute.component />,
       })),
-      {
-        path: '*',
-        element: <Home />,
-      },
     ],
-    [],
-  )
-
-  return (
-    <BrowserRouter>
-      <ErrorBoundary>
-        <Topbar />
-        <Routes>
-          {routes().map((route, index) => (
-            <Route key={index} {...route} />
-          ))}
-        </Routes>
-      </ErrorBoundary>
-    </BrowserRouter>
-  )
+  },
+  ,
+])
+function App() {
+  return <RouterProvider router={router} />
 }
 
 export default App

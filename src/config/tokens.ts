@@ -1,5 +1,7 @@
+import BigNumber from "bignumber.js";
 import { ChainIdEnum } from "./types/network";
 import { Token } from "./types/token";
+import { TokenAmount } from "./types/tokenAmount";
 
 
 
@@ -30,3 +32,7 @@ export const AddressTokenByChain: {[ChainEnum in ChainIdEnum]: {[tokenCode:strin
     }   
 }
 
+
+export const StakingTokenAmount: TokenAmount = {token: ETH, amount: new BigNumber(0)}
+export const RewardTokenAmount: TokenAmount = {token: REWARD, amount: new BigNumber(0)}
+export const PendingRewardTokenAmount: TokenAmount = {token: REWARD, amount: new BigNumber(0)}

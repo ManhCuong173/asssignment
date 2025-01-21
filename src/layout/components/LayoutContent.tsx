@@ -1,21 +1,16 @@
-import Box from 'components/Box/Box'
-import React from 'react'
 import styled from 'styled-components'
+import Column from './Column'
 
 const LayoutContent = ({ children, ...props }) => {
   return <StyledLayoutContentContainer {...props}>{children}</StyledLayoutContentContainer>
 }
 
-const StyledLayoutContentContainer = styled(Box)`
+const StyledLayoutContentContainer = styled(Column)`
   width: 100%;
   flex: 1 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-
-  padding: 80px 0;
-
-  padding-top: ${({theme}) => `${theme.layout.topbarHeight}px`};
+  min-height: ${({ theme }) => `calc(100vh - ${theme.layout.topbarHeight}px)`};
+  align-items: stretch;
+  justify-content: center;
 `
 
-export default React.memo(LayoutContent)
+export default LayoutContent

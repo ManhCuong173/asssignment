@@ -5,7 +5,7 @@ import { layouts } from 'theme/layout'
 
 const Page: React.FC<BoxProps> = ({ children, ...props }) => {
   return (
-    <Box px={['12px', '', '24px']} mx="auto" width="100%" maxWidth={layouts.sizeWidth} {...props}>
+    <Box width="100%" maxWidth={layouts.sizeWidth} {...props}>
       {children}
     </Box>
   )

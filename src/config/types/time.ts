@@ -1,10 +1,10 @@
 
 export enum Time {
-    SEC,
-    MIN,
-    HOUR,
-    DAY,
-    MONTH,
-    YEAR,
+    SEC = 'second',
+    MIN = 'minute',
+    HOUR = 'hour',
+    DAY = 'day',
+    MONTH = 'month',
+    YEAR = 'year',
   }
   

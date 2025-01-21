@@ -1,5 +1,5 @@
 import styled, { DefaultTheme } from 'styled-components'
-import { space, typography, layout } from 'styled-system'
+import { layout, space, typography } from 'styled-system'
 import { TextProps } from './types'
 
 interface ThemedProps extends TextProps {
@@ -21,7 +21,7 @@ const getLineHeight = ({ lineHeight }: TextProps) => {
 export const Text = styled.div<TextProps>`
   color: ${getColor};
   font-size: ${getFontSize};
-  font-weight: ${({ bold }) => (bold ? 600 : 500)};
+  font-weight: ${({ bold }) => (bold ? 400 : 300)};
   line-height: ${getLineHeight};
 
   ${({ textTransform }) => textTransform && `text-transform: ${textTransform};`}

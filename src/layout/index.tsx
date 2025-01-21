@@ -1,22 +1,13 @@
-import React from 'react'
 import styled from 'styled-components'
-import LayoutContent from './components/LayoutContent'
 
 export const StyledLayoutWrapper = styled.div`
   min-height: 100vh;
   height: 100%;
-
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  background: ${({ theme }) => theme.colors.background};
 `
 
-const Layout = ({ children, ...props }) => {
-  return (
-    <StyledLayoutWrapper>
-      <LayoutContent {...props}>{children}</LayoutContent>
-    </StyledLayoutWrapper>
-  )
+const Layout = ({ children }) => {
+  return <StyledLayoutWrapper>{children}</StyledLayoutWrapper>
 }
 
 export default Layout

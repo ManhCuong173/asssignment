@@ -10,10 +10,12 @@ export const AppRoutes: AppRouteConfigType[] = [
     name: 'Home',
     path: AssignmentAppRoutes.home,
     component: LazyHome,
+    mustAuthored: false,
   },
   {
     name: 'Staking',
     path: AssignmentAppRoutes.staking,
     component: LazyStaking,
+    mustAuthored: true,
   },
 ]

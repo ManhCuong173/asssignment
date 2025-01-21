@@ -1,5 +1,5 @@
 export const layouts: LayoutType = {
-   topbarHeight: 56 ,
+   topbarHeight: 68 ,
    sizeWidth: 1920
 }
 

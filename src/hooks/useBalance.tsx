@@ -1,9 +1,10 @@
 import BigNumber from 'bignumber.js'
 import { BIG_ZERO } from 'config'
+import { StakingTokenAmount } from 'config/tokens'
+import { TokenAmount } from 'config/types/tokenAmount'
 import { utils } from 'ethers'
-import { isUndefined } from 'lodash'
 import { useMemo, useState } from 'react'
-import { errorMonitor } from 'stream'
+import { isContractInitialized } from 'utils/contract'
 import { getBalanceAmount } from 'utils/formatBalances'
 import { useErc20Contract, useStakeContract } from './useContract'
 import { useVariableInitialize } from './useVariableInitialize'
@@ -14,12 +15,12 @@ export const useTokenBalance = (tokenAddress: string) => {
   const { account } = useWeb3React()
   const [balance, setBalance] = useState<BigNumber>(BIG_ZERO)
 
-  useVariableInitialize(!isUndefined(contract) && !isUndefined(account), async () => {
+  useVariableInitialize(isContractInitialized(contract), async () => {
     try {
-      const balance = await contract.balanceOf(account.address)
+      const balance = await contract?.balanceOf(account.address)
       setBalance(new BigNumber(utils.formatEther(balance)))
     } catch (error) {
-      console.error(errorMonitor)
+      console.error(error)
     }
   })
 
@@ -29,16 +30,16 @@ export const useTokenBalance = (tokenAddress: string) => {
 }
 
 export const useNativeBalance = () => {
-  const [balance, setBalance] = useState<BigNumber>(BIG_ZERO)
+  const [balance, setBalance] = useState<TokenAmount>(StakingTokenAmount)
   const contract = useStakeContract()
   const { account, etherProvider } = useWeb3React()
 
-  useVariableInitialize(!isUndefined(account) && !isUndefined(etherProvider) && !isUndefined(contract), async () => {
+  useVariableInitialize(!!(account && isContractInitialized(contract)), async () => {
     try {
-      const balance = await etherProvider.getBalance(account.address)
-      setBalance(getBalanceAmount(new BigNumber(balance.toString())))
+      const balanceOnChain = await etherProvider?.getBalance(account.address)
+      setBalance({ ...balance, amount: getBalanceAmount(new BigNumber(balanceOnChain.toString())) })
     } catch (error) {
-      console.error(errorMonitor)
+      console.error(error)
     }
   })
 

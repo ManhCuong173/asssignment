@@ -29,6 +29,6 @@ export const appNetworkMapper: NetworkMapper = {
 
 export const CHAINS: [Chain, ...Chain[]] = isTestnet
   ? [sepolia]
-  : [sepolia]
+  : [mainnet]
 
 export const transport = CHAINS.reduce((prev, transport) => ({...prev, [transport.id]: transport.rpcUrls.default.http}), {})
