@@ -18,17 +18,17 @@ const useInitializeStaking = () => {
     const {account} = useWeb3React()    
 
     useEffect(() => {
-        if(account.address && stakingAmount.amount?.gt(0))
+        if(account.address)
             dispatch(updateStakingAmount({amount:stakingAmount?.amount}))
     }, [stakingAmount, account.address])
     
     useEffect(() => {
-        if(account.address && pendingRewardAmount?.amount.gt(0))
+        if(account.address)
             dispatch(updatePendingRewardAmount({amount:pendingRewardAmount?.amount}))
     }, [pendingRewardAmount,account.address])
 
     useEffect(() => {
-        if(account.address && rewardAmount?.gt(0))
+        if(account.address)
             dispatch(updateRewardAmount({amount:rewardAmount}))
     }, [rewardAmount,account.address])
 }

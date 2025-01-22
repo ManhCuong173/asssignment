@@ -14,7 +14,7 @@ export const useStakeBalance = (): TokenAmount => {
   const { stakingToken } = useStakingTokens()
   const [balance, setBalance] = useState<TokenAmount>({ token: stakingToken, amount: new BigNumber(0) })
 
-  useVariableInitialize(isContractInitialized(contract), async () => {
+  useVariableInitialize(!!(account && isContractInitialized(contract)), async () => {
     try {
       const balanceOnChain = await contract.stakingBalance(account.address)
       const normalizeValue = utils.formatEther(balanceOnChain)
@@ -36,7 +36,7 @@ export const usePendingReward = (): TokenAmount => {
     amount: new BigNumber(0),
   })
 
-  useVariableInitialize(isContractInitialized(contract), async () => {
+  useVariableInitialize(!!(account && isContractInitialized(contract)), async () => {
     try {
       const pendingRewardOnChain = await contract.getPendingReward(account.address)
       const normalizePendingReward = utils.formatEther(pendingRewardOnChain)

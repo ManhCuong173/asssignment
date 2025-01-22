@@ -65,7 +65,7 @@ export const useStakeDuration = () => {
   const { account, etherProvider } = useWeb3React()
   const [stakeDuration, setStakeDuration] = useState<Date>(null)
 
-  useVariableInitialize(!!(contract && etherProvider), async () => {
+  useVariableInitialize(!!(contract && etherProvider && account), async () => {
     try {
       const stakeDuration = await contract.lastStakeTime(account.address)
       if (new BigNumber(stakeDuration.toString()).lte(0)) return
