@@ -62,8 +62,6 @@ export default createReducer<StakingState>(initialState, (builder) =>
     .addCase(unstakeAction.fulfilled, (state, {payload: {data}}) => {
         state.status = Status.IsUnstakingSuccess
         state.stakingAmount = {...state.stakingAmount, amount: BIG_ZERO}
-
-        state.rewardAmount = {...state.stakingAmount, amount: BIG_ZERO}
         state.pendingRewardAmount = {...state.pendingRewardAmount, amount: BIG_ZERO}
     })
     .addCase(unstakeAction.rejected, (state) => {
@@ -75,7 +73,6 @@ export default createReducer<StakingState>(initialState, (builder) =>
     .addCase(claimAction.fulfilled, (state, {payload: {data}}) => {
         state.status = Status.IsClaimingSuccess
         state.rewardAmount = {...state.rewardAmount, amount: new BigNumber(state.rewardAmount.amount).plus(data)}
-
         state.stakingAmount = {...state.stakingAmount, amount: BIG_ZERO}
         state.pendingRewardAmount = {...state.pendingRewardAmount, amount: BIG_ZERO}
     })
