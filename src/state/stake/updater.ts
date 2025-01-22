@@ -6,6 +6,7 @@ import { usePendingReward, useStakeBalance } from "hooks/useSystemBalance";
 import { useWeb3React } from "hooks/useWeb3React";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
+import { showSuccessToast } from "utils/toastify";
 import { claimAction, stakeAction, unstakeAction, updatePendingRewardAmount, updateRewardAmount, updateStakingAmount } from "./action";
 
 
@@ -36,17 +37,18 @@ export default function StakingUpdate() {
     const dispatch = useDispatch()
     useInitializeStaking()
 
-
    useStakingEventListener({
-    onClaimed(_, amount) {
-        console.log(utils.formatEther(amount))
-        dispatch(claimAction.fulfilled({data: utils.formatEther(amount)}))
-    },
-    onStaked(_, amount) {
+       onStaked(_, amount) {
         dispatch(stakeAction.fulfilled({data: utils.formatEther(amount)}))
+        showSuccessToast('Stake successfully!')
+       },
+    onClaimed(_, amount) {
+        dispatch(claimAction.fulfilled({data: utils.formatEther(amount)}))
+        showSuccessToast('Claim successfully!')
     },
     onUnstaked(_, amount) {
         dispatch(unstakeAction.fulfilled({data: utils.formatEther(amount)}))
+        showSuccessToast('Unstake successfully!')
     },
    })
 

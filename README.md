@@ -10,6 +10,8 @@ Steps:
 6. run `npm run compile-abi-types`: to parse abis types from library typechain and @typechain/ethers-v5
 7. run `npm run test` for testings
 8. run `npm run build` for building source and check test case
+8. run `npm run dev` for to run local
+8. run `npm run build && npm run start` for to run with build and run
 
 ## Accessing Assignment
 

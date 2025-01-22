@@ -1,9 +1,9 @@
 import { useMemo } from 'react'
-import { showToast } from 'utils/toastify'
+import { showWarningToast } from 'utils/toastify'
 
 export const useTransactionProcessToast = () => {
   const onUserRejectTxnToasted = (errorCode: string) => {
-    if (errorCode === 'ACTION_REJECTED') return showToast('User reject transactions')
+    if (errorCode === 'ACTION_REJECTED') return showWarningToast('User reject transactions')
   }
-  return useMemo(() => ({ onUserRejectTxnToasted }), [])
+  return useMemo(() => ({ onUserRejectTxnToasted }), [onUserRejectTxnToasted, showWarningToast])
 }

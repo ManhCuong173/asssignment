@@ -7,10 +7,13 @@ import { fetchStatusMiddleware } from 'hooks/useSWRContract'
 import { queryClient } from 'packages/tanstack/queryClient'
 import { wagmiConfig } from 'packages/wagmi/wagmi'
 import { Provider } from 'react-redux'
+import { ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 import store from 'state'
 import { SWRConfig } from 'swr'
 import { theme } from 'theme'
 import Updater from 'updaters/Updaters'
+import { TOAST_CONFIG } from 'utils/toastify'
 import { WagmiProvider } from 'wagmi'
 
 const wagmiConfigInstance = wagmiConfig()
@@ -28,6 +31,8 @@ const Providers: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                 }}
               >
                 {children}
+                <ToastContainer {...TOAST_CONFIG} />
+
                 <Updater />
               </SWRConfig>
             </ThemeProvider>
